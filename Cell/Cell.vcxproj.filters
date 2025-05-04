@@ -26,5 +26,11 @@
     <ClInclude Include="IntegerCell.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="DoubleCell.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StringCell.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
