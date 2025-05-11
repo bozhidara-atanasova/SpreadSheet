@@ -129,13 +129,27 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Cell.cpp" />
+    <ClCompile Include="CellFactory.cpp" />
+    <ClCompile Include="CommandHandler.cpp" />
+    <ClCompile Include="DoubleCell.cpp" />
+    <ClCompile Include="FileManager.cpp" />
+    <ClCompile Include="FormulaCell.cpp" />
+    <ClCompile Include="IntegerCell.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="StringCell.cpp" />
+    <ClCompile Include="Table.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Cell.h" />
+    <ClInclude Include="CellFactory.h" />
+    <ClInclude Include="CommandHandler.h" />
     <ClInclude Include="DoubleCell.h" />
+    <ClInclude Include="FileManager.h" />
+    <ClInclude Include="FormulaCell.h" />
+    <ClInclude Include="FormulaEvaluator.h" />
     <ClInclude Include="IntegerCell.h" />
     <ClInclude Include="StringCell.h" />
+    <ClInclude Include="Table.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

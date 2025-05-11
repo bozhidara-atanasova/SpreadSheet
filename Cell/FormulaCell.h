@@ -1,11 +1,14 @@
 #pragma once
 #include "Cell.h"
+#include <string>
 
-class IntegerCell : public Cell {
-    int value;
+class Table; // forward declaration
+
+class FormulaCell : public Cell {
+    std::string formula;
 
 public:
-    IntegerCell(int v);
+    FormulaCell(const std::string& f);
     std::string toString() const override;
     double getValue() const override;
     Cell* clone() const override;
