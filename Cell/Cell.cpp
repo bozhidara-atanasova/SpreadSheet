@@ -10,8 +10,5 @@ public:
     double getValue() const override;
     Cell* clone() const override;
 };
-int main()
-{
-    std::cout << "Hello World!\n";
-}
+
 
