@@ -23,7 +23,7 @@ void CommandHandler::repl() {
         if (cmd == "open") {
             ss >> file;
             try {
-                table = FileManager::load(file);
+                table = std::move(FileManager::load(file));
                 hasTable = true;
                 std::cout << "Opened.\n";
             }
@@ -55,13 +55,23 @@ void CommandHandler::repl() {
 
         else if (cmd == "edit") {
             if (!hasTable) { std::cout << "No file.\n"; continue; }
-            size_t r, c; ss >> r >> c;
-            std::string val; std::getline(ss, val); trim(val);
+
+            size_t r, c;
+            if (!(ss >> r >> c)) {
+                std::cout << "Usage: edit <row> <col> <value>\n";
+                continue;                    
+            }
+            std::string val;          
+            std::getline(ss, val);
+            trim(val);          
             try {
-                table.set(r - 1, c - 1, CellFactory::make(val, &table, r - 1, c - 1));
+                table.set(r - 1, c - 1,
+                    CellFactory::make(val, &table, r - 1, c - 1));
                 std::cout << "OK.\n";
             }
-            catch (const std::exception& e) { std::cout << e.what() << '\n'; }
+            catch (const std::exception& e) {
+                std::cout << e.what() << '\n';
+            }
         }
 
         else if (cmd == "help") {

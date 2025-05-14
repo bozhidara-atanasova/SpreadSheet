@@ -1,8 +1,11 @@
-#include "FormulaEvaluator.h"
+﻿#include "FormulaEvaluator.h"
+#include "FormulaCell.h"
 #include "Table.h"
 #include <cctype>
 #include <sstream>
-
+FormulaCell::FormulaCell(const std::string& e, Table* t)
+    : expr(e), owner(t)
+{}
 FormulaEvaluator::FormulaEvaluator(const Table& t) : tbl(t) {}
 
 void FormulaEvaluator::skip(const std::string& s, size_t& p) {
@@ -39,4 +42,10 @@ double FormulaEvaluator::eval(const std::string& expr) const {
         ++p;
     }
     return total;
+}
+std::string FormulaCell::text() const { return '=' + expr; }
+double FormulaCell::number(Table& tbl) const
+{
+    FormulaEvaluator ev(tbl);          
+    return ev.eval(expr);             
 }

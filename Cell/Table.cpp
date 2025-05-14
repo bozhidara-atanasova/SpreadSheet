@@ -24,8 +24,11 @@ size_t Table::cols() const
 
 Cell* Table::at(size_t r, size_t c)
 {
-    return (r < data.size() && c < data[r].size()) ? data[r][c] : nullptr;
+    if (r >= data.size())                  return nullptr;
+    if (c >= data[r].size())               return nullptr;
+    return data[r][c];                   
 }
+
 const Cell* Table::at(size_t r, size_t c) const
 {
     return const_cast<Table*>(this)->at(r, c);
@@ -49,22 +52,28 @@ double Table::getNumber(size_t r, size_t c) const
 
 void Table::print() const
 {
-    size_t C = cols();
+    const size_t C = cols();
+    if (C == 0 || rows() == 0) { std::cout << "(empty)\n"; return; }
+
     std::vector<size_t> w(C, 0);
 
     for (size_t c = 0; c < C; ++c)
-        for (size_t r = 0; r < rows(); ++r)
-            if (const Cell* ce = at(r, c))
-                if (ce->text().size() > w[c]) w[c] = ce->text().size();
+        for (size_t r = 0; r < rows(); ++r) {
+            const Cell* ce = at(r, c);
+            if (ce) {
+                size_t len = ce->text().size();
+                if (len > w[c]) w[c] = len;
+            }
+        }
 
-    for (size_t r = 0; r < rows(); ++r)
-    {
-        for (size_t c = 0; c < C; ++c)
-        {
+    for (size_t r = 0; r < rows(); ++r) {
+        for (size_t c = 0; c < C; ++c) {
             std::cout << "| ";
             const Cell* ce = at(r, c);
-            std::cout << std::left << std::setw(w[c])
-                << (ce ? ce->text() : "") << ' ';
+            if (ce)
+                std::cout << std::left << std::setw(w[c]) << ce->text() << ' ';
+            else
+                std::cout << std::left << std::setw(w[c]) << "" << ' ';
         }
         std::cout << "|\n";
     }
