@@ -1,8 +1,11 @@
-#pragma once
+﻿#pragma once
 #include <string>
-#include "Cell.h"
+#include "IntegerCell.h"
+#include "DoubleCell.h"
+#include "StringCell.h"
+#include "FormulaCell.h"
 
-class CellFactory {
-public:
-    static Cell* createCell(const std::string& rawData);
+struct CellFactory {
+    static Cell* make(const std::string& raw, Table* t,
+        size_t r, size_t c);
 };

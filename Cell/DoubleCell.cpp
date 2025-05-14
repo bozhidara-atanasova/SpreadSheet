@@ -1,16 +1,10 @@
 #include "DoubleCell.h"
-#include <string>
+#include <sstream>
+#include <iomanip>
 
 DoubleCell::DoubleCell(double v) : value(v) {}
 
-std::string DoubleCell::toString() const {
-    return std::to_string(value);
+std::string DoubleCell::text() const {
+    std::ostringstream os; os << std::setprecision(10) << value; return os.str();
 }
-
-double DoubleCell::getValue() const {
-    return value;
-}
-
-Cell* DoubleCell::clone() const {
-    return new DoubleCell(*this);
-}
+double DoubleCell::number(Table&) const { return value; }

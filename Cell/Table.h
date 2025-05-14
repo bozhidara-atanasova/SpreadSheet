@@ -1,19 +1,21 @@
-#pragma once
+﻿#pragma once
 #include <vector>
-#include <string>
-
-class Cell;
+#include "Cell.h"
 
 class Table {
-    std::vector<std::vector<Cell*>> cells;
-
+private:
+    std::vector<std::vector<Cell*>> data;
+    void clear();                       // clear the memory
 public:
-    Table();
-    Table(const Table& other);
-    Table& operator=(const Table& other);
-    ~Table();
+    Table() {}
+    ~Table();                           // here we clear all
+    size_t rows() const;
+    size_t cols() const;
 
-    void setCell(size_t row, size_t col, Cell* newCell);
-    void print() const;
-    double getCellValue(size_t row, size_t col) const;
+    Cell* at(size_t r, size_t c);
+    const Cell* at(size_t r, size_t c) const;
+
+    void set(size_t r, size_t c, Cell* p);   // takes the leading
+    double getNumber(size_t r, size_t c) const;
+    void   print() const;
 };

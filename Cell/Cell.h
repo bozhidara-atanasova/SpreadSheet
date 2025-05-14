@@ -1,9 +1,11 @@
 ﻿#pragma once
 #include <string>
+
+class Table;
+
 class Cell {
 public:
-    virtual std::string toString() const = 0; 
-    virtual double getValue() const = 0;      
-    virtual Cell* clone() const = 0;         
-    virtual ~Cell() {}                      
+    virtual ~Cell() {}
+    virtual std::string text() const = 0;       // print / save
+    virtual double      number(Table& t) const = 0; // for formulas
 };

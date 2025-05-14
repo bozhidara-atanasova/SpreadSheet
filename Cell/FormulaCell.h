@@ -1,15 +1,12 @@
-#pragma once
+﻿#pragma once
 #include "Cell.h"
 #include <string>
 
-class Table; // forward declaration
-
 class FormulaCell : public Cell {
-    std::string formula;
-
+    std::string expr;      // without '='
+    Table* owner;          // we will need it for R..C..
 public:
-    FormulaCell(const std::string& f);
-    std::string toString() const override;
-    double getValue() const override;
-    Cell* clone() const override;
+    FormulaCell(const std::string& e, Table* t);
+    std::string text() const override;
+    double      number(Table&) const override;
 };

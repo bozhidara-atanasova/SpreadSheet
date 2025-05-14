@@ -2,11 +2,10 @@
 #include "Cell.h"
 
 class IntegerCell : public Cell {
-    int value;
-
+private:
+    long long value;
 public:
-    IntegerCell(int v);
-    std::string toString() const override;
-    double getValue() const override;
-    Cell* clone() const override;
+    IntegerCell(long long v);
+    std::string text()   const override;
+    double number(Table&) const override;
 };
