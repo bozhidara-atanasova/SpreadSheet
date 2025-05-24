@@ -1,88 +1,51 @@
-﻿#include "CommandHandler.h"
+﻿// CommandHandler.cpp
+#include "CommandHandler.h"
 #include "FileManager.h"
 #include "CellFactory.h"
-#include <iostream>
 #include <sstream>
+#include <iostream>
 
-void CommandHandler::trim(std::string& s) {
-    size_t p = s.find_first_not_of(" \t");
-    if (p == std::string::npos) s.clear();
-    else s.erase(0, p);
-}
+CommandHandler::CommandHandler(Table& t) : table(t) {}
 
-void CommandHandler::repl() {
-    std::string line;
-    std::cout << "Type 'help' for commands.\n";
-    while (true) {
-        std::cout << "> ";
-        if (!std::getline(std::cin, line)) break;
+void CommandHandler::execute(const std::string& line) {
+    std::stringstream ss(line);
+    std::string cmd;
+    ss >> cmd;
 
-        std::stringstream ss(line);
-        std::string cmd; ss >> cmd;
-
-        if (cmd == "open") {
-            ss >> file;
-            try {
-                table = std::move(FileManager::load(file));
-                hasTable = true;
-                std::cout << "Opened.\n";
-            }
-            catch (const std::exception& e) { std::cout << e.what() << '\n'; }
-        }
-
-        else if (cmd == "close") {
-            if (hasTable) { hasTable = false; table = Table(); std::cout << "Closed.\n"; }
-            else std::cout << "No file.\n";
-        }
-
-        else if (cmd == "save") {
-            if (!hasTable) { std::cout << "No file.\n"; continue; }
-            try { FileManager::save(file, table); std::cout << "Saved.\n"; }
-            catch (const std::exception& e) { std::cout << e.what() << '\n'; }
-        }
-
-        else if (cmd == "saveas") {
-            std::string path; ss >> path;
-            if (!hasTable) { std::cout << "No file.\n"; continue; }
-            try { FileManager::save(path, table); file = path; std::cout << "Saved as.\n"; }
-            catch (const std::exception& e) { std::cout << e.what() << '\n'; }
-        }
-
-        else if (cmd == "print") {
-            if (hasTable) table.print();
-            else std::cout << "No file.\n";
-        }
-
-        else if (cmd == "edit") {
-            if (!hasTable) { std::cout << "No file.\n"; continue; }
-
-            size_t r, c;
-            if (!(ss >> r >> c)) {
-                std::cout << "Usage: edit <row> <col> <value>\n";
-                continue;                    
-            }
-            std::string val;          
-            std::getline(ss, val);
-            trim(val);          
-            try {
-                table.set(r - 1, c - 1,
-                    CellFactory::make(val, &table, r - 1, c - 1));
-                std::cout << "OK.\n";
-            }
-            catch (const std::exception& e) {
-                std::cout << e.what() << '\n';
-            }
-        }
-
-        else if (cmd == "help") {
-            std::cout << "open <file>\nclose\nsave\nsaveas <file>\nprint\n"
-                "edit <row> <col> <value>\nhelp\nexit\n";
-        }
-
-        else if (cmd == "exit") { std::cout << "Bye.\n"; break; }
-
-        else if (cmd.empty()) { /* празен ред */ }
-
-        else std::cout << "Unknown command.\n";
+    if (cmd == "open") {
+        std::string file;
+        ss >> file;
+        if (FileManager::loadFromFile(table, file))
+            std::cout << "Successfully opened " << file << "\n";
+        else
+            std::cout << "Failed to open " << file << "\n";
+    }
+    else if (cmd == "print") {
+        table.print();
+    }
+    else if (cmd == "edit") {
+        size_t row, col;
+        std::string content;
+        ss >> row >> col;
+        std::getline(ss, content);
+        Cell* c = CellFactory::createCell(content);
+        table.setCell(row, col, c);
+    }
+    else if (cmd == "exit") {
+        std::cout << "Exiting...\n";
+        exit(0);
+    }
+    else if (cmd == "help") {
+        std::cout << "The following commands are supported:\n";
+        std::cout << "open <file>     - opens <file>\n";
+        std::cout << "close           - closes currently opened file\n";
+        std::cout << "save            - saves the currently open file\n";
+        std::cout << "saveas <file>   - saves the file to the specified path\n";
+        std::cout << "edit <r> <c> <value> - edit cell at row r, column c\n";
+        std::cout << "print           - prints the current table\n";
+        std::cout << "exit            - exits the program\n";
+    }
+    else {
+        std::cout << "Unknown command\n";
     }
 }

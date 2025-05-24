@@ -1,80 +1,66 @@
-﻿#include "Table.h"
-#include "FormulaCell.h"
+﻿// Table.cpp
+#include "Table.h"
 #include <iostream>
 #include <iomanip>
 
-void Table::clear()
-{
+Table::Table() {}
+
+Table::Table(const Table& other) {
+    copyFrom(other);
+}
+
+Table& Table::operator=(const Table& other) {
+    if (this != &other) {
+        clear();
+        copyFrom(other);
+    }
+    return *this;
+}
+
+Table::~Table() {
+    clear();
+}
+
+void Table::clear() {
     for (auto& row : data)
-        for (Cell* c : row) delete c;
+        for (auto cell : row)
+            delete cell;
     data.clear();
 }
 
-Table::~Table() { clear(); }
-
-size_t Table::rows() const { return data.size(); }
-
-size_t Table::cols() const
-{
-    size_t maxC = 0;
-    for (const auto& row : data)
-        if (row.size() > maxC) maxC = row.size();
-    return maxC;
+void Table::copyFrom(const Table& other) {
+    data.resize(other.data.size());
+    for (size_t i = 0; i < other.data.size(); ++i) {
+        data[i].resize(other.data[i].size());
+        for (size_t j = 0; j < other.data[i].size(); ++j)
+            data[i][j] = other.data[i][j] ? other.data[i][j]->clone() : nullptr;
+    }
 }
 
-Cell* Table::at(size_t r, size_t c)
-{
-    if (r >= data.size())                  return nullptr;
-    if (c >= data[r].size())               return nullptr;
-    return data[r][c];                   
+void Table::setCell(size_t row, size_t col, Cell* cell) {
+    if (row >= data.size())
+        data.resize(row + 1);
+    if (col >= data[row].size())
+        data[row].resize(col + 1);
+
+    delete data[row][col];
+    data[row][col] = cell;
 }
 
-const Cell* Table::at(size_t r, size_t c) const
-{
-    return const_cast<Table*>(this)->at(r, c);
+const Cell* Table::getCell(size_t row, size_t col) const {
+    if (row < data.size() && col < data[row].size())
+        return data[row][col];
+    return nullptr;
 }
 
-void Table::set(size_t r, size_t c, Cell* p)
-{
-    if (r >= data.size()) data.resize(r + 1);
-    if (c >= data[r].size()) data[r].resize(c + 1, nullptr);
-
-    delete data[r][c];       
-    data[r][c] = p;
-}
-
-double Table::getNumber(size_t r, size_t c) const
-{
-    const Cell* ce = at(r, c);
-    if (!ce) return 0;
-    return ce->number(const_cast<Table&>(*this)); 
-}
-
-void Table::print() const
-{
-    const size_t C = cols();
-    if (C == 0 || rows() == 0) { std::cout << "(empty)\n"; return; }
-
-    std::vector<size_t> w(C, 0);
-
-    for (size_t c = 0; c < C; ++c)
-        for (size_t r = 0; r < rows(); ++r) {
-            const Cell* ce = at(r, c);
-            if (ce) {
-                size_t len = ce->text().size();
-                if (len > w[c]) w[c] = len;
-            }
-        }
-
-    for (size_t r = 0; r < rows(); ++r) {
-        for (size_t c = 0; c < C; ++c) {
-            std::cout << "| ";
-            const Cell* ce = at(r, c);
-            if (ce)
-                std::cout << std::left << std::setw(w[c]) << ce->text() << ' ';
+void Table::print() const {
+    for (const auto& row : data) {
+        for (const auto& cell : row) {
+            if (cell)
+                std::cout << std::setw(10) << cell->getValue() << " | ";
             else
-                std::cout << std::left << std::setw(w[c]) << "" << ' ';
+                std::cout << std::setw(10) << " " << " | ";
         }
-        std::cout << "|\n";
+        std::cout << '\n';
     }
 }

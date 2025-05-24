@@ -1,7 +1,13 @@
+// IntegerCell.cpp
 #include "IntegerCell.h"
-#include <string>
+#include <sstream>
 
-IntegerCell::IntegerCell(long long v) : value(v) {}
+IntegerCell::IntegerCell(int v) : value(v) {}
 
-std::string IntegerCell::text() const { return std::to_string(value); }
-double      IntegerCell::number(Table&) const { return static_cast<double>(value); }
+std::string IntegerCell::getValue() const {
+    return std::to_string(value);
+}
+
+Cell* IntegerCell::clone() const {
+    return new IntegerCell(*this);
+}

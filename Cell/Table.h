@@ -1,39 +1,20 @@
-﻿#pragma once
-#include <vector>
+﻿// Table.h
+#pragma once
 #include "Cell.h"
+#include <vector>
+#include <string>
 
 class Table {
     std::vector<std::vector<Cell*>> data;
-    void clear();            
+    void clear();
+    void copyFrom(const Table& other);
 public:
-    Table() = default;
-    size_t rows() const;
-    size_t cols() const;
-
-    Table(const Table&) = delete;
-    Table& operator=(const Table&) = delete;
-
-    Table(Table&& other) noexcept
-        : data(std::move(other.data))
-    {
-        other.data.clear();
-    }
-
-    Table& operator=(Table&& other) noexcept
-    {
-        if (this != &other) {
-            clear();                     
-            data = std::move(other.data);
-            other.data.clear();        
-        }
-        return *this;
-    }
-    Cell* at(size_t r, size_t c);
-    const Cell* at(size_t r, size_t c) const;
-
-    void set(size_t r, size_t c, Cell* p);   // takes the leading
-    double getNumber(size_t r, size_t c) const;
-    void   print() const;
-
+    Table();
+    Table(const Table& other);
+    Table& operator=(const Table& other);
     ~Table();
+
+    void setCell(size_t row, size_t col, Cell* cell);
+    const Cell* getCell(size_t row, size_t col) const;
+    void print() const;
 };

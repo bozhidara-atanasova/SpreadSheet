@@ -1,46 +1,29 @@
-﻿#include "FileManager.h"
+﻿// FileManager.cpp
+#include "FileManager.h"
 #include "CellFactory.h"
 #include <fstream>
 #include <sstream>
 
-Table FileManager::load(const std::string& path)
-{
-    std::ifstream in(path);
-    if (!in) throw std::runtime_error("Cannot open " + path);
+bool FileManager::loadFromFile(Table& table, const std::string& filename) {
+    std::ifstream in(filename);
+    if (!in) return false;
 
-    Table t;
     std::string line;
-    size_t r = 0;
-
-    while (std::getline(in, line))
-    {
+    size_t row = 0;
+    while (std::getline(in, line)) {
         std::stringstream ss(line);
-        std::string cellTxt;
-        size_t c = 0;
-
-        while (std::getline(ss, cellTxt, ','))
-        {
-            t.set(r, c, CellFactory::make(cellTxt, &t, r, c));
-            ++c;
+        std::string cellStr;
+        size_t col = 0;
+        while (std::getline(ss, cellStr, ',')) {
+            Cell* c = CellFactory::createCell(cellStr);
+            table.setCell(row, col++, c);
         }
-        ++r;
+        ++row;
     }
-    return t;             
+    return true;
 }
 
-void FileManager::save(const std::string& path, const Table& t)
-{
-    std::ofstream out(path);
-    if (!out) throw std::runtime_error("Cannot write " + path);
-
-    for (size_t r = 0; r < t.rows(); ++r)
-    {
-        for (size_t c = 0; c < t.cols(); ++c)
-        {
-            const Cell* ce = t.at(r, c);
-            if (ce) out << ce->text();
-            if (c + 1 < t.cols()) out << ',';
-        }
-        if (r + 1 < t.rows()) out << '\n';
-    }
+bool FileManager::saveToFile(const Table& table, const std::string& filename) {
+    // TODO: serialization logic if needed
+    return false;
 }

@@ -1,22 +1,33 @@
-﻿#include "CellFactory.h"
-#include "Table.h"
-#include <cstdlib>   // std::strtod, std::strtoll>
+﻿// CellFactory.cpp
+#include "CellFactory.h"
+#include "IntegerCell.h"
+#include "DoubleCell.h"
+#include "StringCell.h"
+#include "FormulaCell.h"
+#include <sstream>
+#include <regex>
 
-Cell* CellFactory::make(const std::string& raw,
-    Table* owner,
-    size_t row, size_t col)
-{
-    if (raw.empty())                        
-        return new StringCell("");
+Cell* CellFactory::createCell(const std::string& input) {
+    std::string trimmed = input;
+    trimmed.erase(0, trimmed.find_first_not_of(" \t"));
+    trimmed.erase(trimmed.find_last_not_of(" \t") + 1);
 
-    if (raw[0] == '=')                    
-        return new FormulaCell(raw.substr(1), owner);
+    if (trimmed.empty()) return nullptr;
 
-    if (raw.front() == '"' && raw.back() == '"') 
-        return new StringCell(raw.substr(1, raw.size() - 2));
+    if (trimmed[0] == '=')
+        return new FormulaCell(trimmed);
 
-    if (raw.find('.') != std::string::npos)        
-        return new DoubleCell(std::strtod(raw.c_str(), nullptr));
+    if (trimmed.front() == '"' && trimmed.back() == '"')
+        return new StringCell(trimmed.substr(1, trimmed.length() - 2));
 
-    return new IntegerCell(std::strtoll(raw.c_str(), nullptr, 10));
+    std::istringstream iss(trimmed);
+    int i;
+    if (iss >> i && iss.eof()) return new IntegerCell(i);
+
+    iss.clear();
+    iss.str(trimmed);
+    double d;
+    if (iss >> d && iss.eof()) return new DoubleCell(d);
+
+    return nullptr;
 }

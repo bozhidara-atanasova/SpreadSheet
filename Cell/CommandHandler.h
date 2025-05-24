@@ -1,14 +1,11 @@
+// CommandHandler.h
 #pragma once
-#include <string>
 #include "Table.h"
+#include <string>
 
 class CommandHandler {
-private:
-    bool hasTable = false;   
-    Table table;            
-    std::string file;              
-    static void trim(std::string& s);
-
+    Table& table;
 public:
-    void repl();                 
+    CommandHandler(Table& t);
+    void execute(const std::string& line);
 };

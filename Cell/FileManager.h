@@ -1,8 +1,10 @@
+// FileManager.h
 #pragma once
-#include <string>
 #include "Table.h"
+#include <string>
 
-struct FileManager {
-    static Table load(const std::string& path);
-    static void  save(const std::string& path, const Table& t);
+class FileManager {
+public:
+    static bool loadFromFile(Table& table, const std::string& filename);
+    static bool saveToFile(const Table& table, const std::string& filename);
 };
