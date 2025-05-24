@@ -1,4 +1,3 @@
-// FileManager.h
 #pragma once
 #include "Table.h"
 #include <string>

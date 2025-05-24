@@ -1,5 +1,4 @@
-﻿// StringCell.cpp
-#include "StringCell.h"
+﻿#include "StringCell.h"
 
 StringCell::StringCell(const std::string& v) : value(v) {}
 

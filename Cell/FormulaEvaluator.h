@@ -12,3 +12,4 @@ public:
     FormulaEvaluator(const Table& t);
     double eval(const std::string& expr) const;     // + - * /  and  R<r>C<c>
 };
+//this is for future implementations

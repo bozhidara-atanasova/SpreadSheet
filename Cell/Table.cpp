@@ -1,5 +1,4 @@
-﻿// Table.cpp
-#include "Table.h"
+﻿#include "Table.h"
 #include <iostream>
 #include <iomanip>
 
@@ -54,13 +53,23 @@ const Cell* Table::getCell(size_t row, size_t col) const {
 }
 
 void Table::print() const {
+    const int colWidth = 10;
     for (const auto& row : data) {
         for (const auto& cell : row) {
             if (cell)
-                std::cout << std::setw(10) << cell->getValue() << " | ";
+                std::cout << std::setw(colWidth) << cell->getValue() << " | ";
             else
-                std::cout << std::setw(10) << " " << " | ";
+                std::cout << std::setw(colWidth) << " " << " | ";
         }
-        std::cout << '\n';
+        std::cout << "\n";
     }
+}
+size_t Table::getRowCount() const {
+    return data.size();
+}
+
+size_t Table::getColCount(size_t row) const {
+    if (row < data.size())
+        return data[row].size();
+    return 0;
 }

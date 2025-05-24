@@ -1,5 +1,4 @@
-﻿// FileManager.cpp
-#include "FileManager.h"
+﻿#include "FileManager.h"
 #include "CellFactory.h"
 #include <fstream>
 #include <sstream>
@@ -21,9 +20,27 @@ bool FileManager::loadFromFile(Table& table, const std::string& filename) {
         ++row;
     }
     return true;
-}
+}//this method is for loading the table as text file
 
 bool FileManager::saveToFile(const Table& table, const std::string& filename) {
-    // TODO: serialization logic if needed
-    return false;
+    std::ofstream out(filename);
+    if (!out) return false;
+
+    for (size_t r = 0; r < table.getRowCount(); ++r) {
+        for (size_t c = 0; c < table.getColCount(r); ++c) {
+            const Cell* cell = table.getCell(r, c);
+            if (cell) {
+                std::string val = cell->getValue();
+                if (val.find(',') != std::string::npos || val.find('"') != std::string::npos) {
+                    val = "\"" + val + "\"";
+                }
+                out << val;
+            }
+            if (c < table.getRowCount() - 1)
+                out << ",";
+        }
+        out << "\n";
+    }
+    return true;
 }
+

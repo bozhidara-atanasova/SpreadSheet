@@ -1,4 +1,3 @@
-// DoubleCell.h
 #pragma once
 #include "Cell.h"
 

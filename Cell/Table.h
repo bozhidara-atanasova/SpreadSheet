@@ -17,4 +17,8 @@ public:
     void setCell(size_t row, size_t col, Cell* cell);
     const Cell* getCell(size_t row, size_t col) const;
     void print() const;
+    size_t getRowCount() const;
+    size_t getColCount(size_t row) const;
+  
+
 };

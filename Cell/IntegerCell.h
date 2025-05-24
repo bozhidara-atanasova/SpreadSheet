@@ -6,5 +6,5 @@ class IntegerCell : public Cell {
 public:
     IntegerCell(int v); //constructor
     std::string getValue() const override; //returns text representing of a number 
-    Cell* clone() const override; //deep copy
+    Cell* clone() const override; //deep copyy
 };

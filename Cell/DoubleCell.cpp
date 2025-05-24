@@ -1,10 +1,9 @@
-// DoubleCell.cpp
 #include "DoubleCell.h"
 #include <string>
 #include <sstream>
 #include <iomanip>
 
-DoubleCell::DoubleCell(double v) : value(v) {}
+DoubleCell::DoubleCell(double v) : value(v) {} //constructor
 
 std::string DoubleCell::getValue() const {
     std::ostringstream oss;
