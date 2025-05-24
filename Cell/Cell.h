@@ -3,8 +3,7 @@
 
 class Cell {
 public:
-    virtual ~Cell() = default;
-    virtual std::string getValue() const = 0; //returns the value of the cell like text
-    virtual Cell* clone() const = 0; //creates copy of the cell
+    virtual ~Cell() = default; //virtual destructor
+    virtual std::string getValue() const = 0; //returns all as string
+    virtual Cell* clone() const = 0; //because of this we can make deep copy
 };
-//define the interface for all types of cells

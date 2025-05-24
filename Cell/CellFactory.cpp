@@ -1,5 +1,4 @@
-﻿// CellFactory.cpp
-#include "CellFactory.h"
+﻿#include "CellFactory.h"
 #include "IntegerCell.h"
 #include "DoubleCell.h"
 #include "StringCell.h"
