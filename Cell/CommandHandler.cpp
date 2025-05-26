@@ -3,6 +3,8 @@
 #include "CellFactory.h"
 #include <sstream>
 #include <iostream>
+#include <fstream>
+
 
 CommandHandler::CommandHandler(Table& t) : table(t) {} //constructor
 
@@ -29,6 +31,8 @@ void CommandHandler::execute(const std::string& line) {
         std::getline(ss, content);
         Cell* c = CellFactory::createCell(content);
         table.setCell(row, col, c);
+
+        FileManager::saveToFile(table, "sheet.txt");
     }
     else if (cmd == "exit") {
         std::cout << "Exiting...:(\n";
@@ -46,7 +50,8 @@ void CommandHandler::execute(const std::string& line) {
     }
     else if (cmd == "close") {
         table = Table(); 
-        currentFile.clear();
+        
+        std::ofstream ofs("sheet.txt", std::ofstream::trunc);
         std::cout << "Table cleared.\n";
     }
     else if (cmd == "save") {

@@ -8,7 +8,7 @@ int main() {
     CommandHandler handler(table);
 
     std::string line;
-    std::cout << "Spreadsheet CLI\nType 'help' for commands\n";
+    std::cout << "Spreadsheet BA\nType 'help' for commands\n";
     while (true) {
         std::cout << "> ";
         std::getline(std::cin, line);
