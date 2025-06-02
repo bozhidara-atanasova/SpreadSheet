@@ -1,6 +1,7 @@
 ﻿#include "CommandHandler.h"
 #include "FileManager.h"
 #include "CellFactory.h"
+#include "FormulaCell.h"
 #include <sstream>
 #include <iostream>
 #include <fstream>
@@ -28,9 +29,23 @@ void CommandHandler::execute(const std::string& line) {
         size_t row, col;
         std::string content;
         ss >> row >> col;
+        row--;
+        col--;
         std::getline(ss, content);
-        Cell* c = CellFactory::createCell(content);
+        content.erase(0, content.find_first_not_of(" \t")); 
+
+        Cell* c = nullptr;
+        if (!content.empty() && content[0] == '=') {
+            auto* fc = new FormulaCell(content);
+            fc->setTable(&table);
+            c = fc;
+        }
+        else {
+            c = CellFactory::createCell(content);
+        }
+
         table.setCell(row, col, c);
+
 
         FileManager::saveToFile(table, "sheet.txt");
     }
@@ -44,7 +59,7 @@ void CommandHandler::execute(const std::string& line) {
         std::cout << "close           - closes currently opened file\n";
         std::cout << "save            - saves the currently open file\n";
         std::cout << "saveas <file>   - saves the file to the specified path\n";
-        std::cout << "edit <r> <c> <value> - edit cell at row r, column c\n";
+        std::cout << "edit <r> <c> <value> - edit cell at row r, column c;for text it must be in " "\n";
         std::cout << "print           - prints the current table\n";
         std::cout << "exit            - exits the program :(\n";
     }

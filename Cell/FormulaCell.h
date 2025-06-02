@@ -1,11 +1,14 @@
 ﻿#pragma once
 #include "Cell.h"
 #include <string>
+#include "Table.h"
 
 class FormulaCell : public Cell {
-    std::string formula; // example "=R1C2+R2C3"
+    std::string formula;
+    const Table* table = nullptr;
 public:
     FormulaCell(const std::string& f);
-    std::string getValue() const override; // for now it returns the formula, but in the future i will make it to calculate everything
+    void setTable(const Table* t); 
+    std::string getValue() const override;
     Cell* clone() const override;
 };

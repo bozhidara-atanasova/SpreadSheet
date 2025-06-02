@@ -134,6 +134,7 @@
     <ClCompile Include="DoubleCell.cpp" />
     <ClCompile Include="FileManager.cpp" />
     <ClCompile Include="FormulaCell.cpp" />
+    <ClCompile Include="FormulaEvaluator.cpp" />
     <ClCompile Include="IntegerCell.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="StringCell.cpp" />
