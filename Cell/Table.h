@@ -1,5 +1,4 @@
-﻿// Table.h
-#pragma once
+﻿#pragma once
 #include "Cell.h"
 #include <vector>
 #include <string>

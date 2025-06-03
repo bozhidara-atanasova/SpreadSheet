@@ -1,5 +1,4 @@
-﻿// CellFactory.h
-#pragma once
+﻿#pragma once
 #include "Cell.h"
 #include <string>
 

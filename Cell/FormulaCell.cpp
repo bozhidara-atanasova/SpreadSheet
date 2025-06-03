@@ -23,7 +23,6 @@ std::string FormulaCell::getValue() const {
     }
 }
 
-
 Cell* FormulaCell::clone() const {
     return new FormulaCell(*this);
 }

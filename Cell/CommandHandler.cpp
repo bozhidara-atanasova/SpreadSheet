@@ -32,7 +32,7 @@ void CommandHandler::execute(const std::string& line) {
         row--;
         col--;
         std::getline(ss, content);
-        content.erase(0, content.find_first_not_of(" \t")); 
+        content.erase(0, content.find_first_not_of(" \t"));
 
         Cell* c = nullptr;
         if (!content.empty() && content[0] == '=') {
@@ -64,8 +64,8 @@ void CommandHandler::execute(const std::string& line) {
         std::cout << "exit            - exits the program :(\n";
     }
     else if (cmd == "close") {
-        table = Table(); 
-        
+        table = Table();
+
         std::ofstream ofs("sheet.txt", std::ofstream::trunc);
         std::cout << "Table cleared.\n";
     }
@@ -94,4 +94,4 @@ void CommandHandler::execute(const std::string& line) {
     else {
         std::cout << "Unknown command\n";
     }
-}//The current code in the file is for the description of file operation commands
+}
